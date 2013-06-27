@@ -1,0 +1,30 @@
+/* @override
+	http://demo.ticketevolution.dev/css/style.css */
+
+body {
+    padding-top: 40px;
+}
+
+.banner {
+    z-index: 200002;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#listParameters, #methodInput, fieldset.createOrdersClient {
+    display: none;
+}
+
+#productionWarning {
+    font-size: 1.2em;
+    line-height: 1.4em;
+    background-color: yellow;
+    border: 1px solid gray;
+    margin-top: 1em;
+    padding: .5em;
+}
+
+.exception {
+    background-color: red;
+}

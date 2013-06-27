@@ -1,0 +1,5 @@
+/application/config.php
+/vendor/
+/Capfile
+/composer.lock
+/config/

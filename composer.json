@@ -1,0 +1,23 @@
+{
+    "name": "teamonetickets/razorgator-php-demo",
+    "type": "project",
+    "description": "A simple demo app to showcase and test the Razorgator PHP Client Library.",
+    "keywords": ["library", "Razorgator", "Fullfilment", "API", "ticket"],
+    "homepage": "https://github.com/TeamOneTickets/razorgator-php-demo",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "J Cobb"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "teamonetickets/razorgator-php": ">=0.9.0"
+    },
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://github.com/TeamOneTickets/razorgator-php-demo/issues",
+        "wiki": "https://github.com/TeamOneTickets/razorgator-php-demo/wiki",
+        "source": "https://github.com/TeamOneTickets/razorgator-php-demo"
+    }
+}
