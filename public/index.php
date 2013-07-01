@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Demonstration of the Razorgator PHP Client Library *
+ * Demonstration of the Razorgator PHP Client Library
+ *
  * LICENSE
  *
  * This source file is subject to the BSD 3-Clause License that is bundled
@@ -196,7 +197,7 @@ if (isset($_REQUEST['libraryMethod'])) {
                 <h1>Demonstration of the Razorgator PHP Client Library</h1>
             </div>
 		    <p>This is a quick demo of the Razorgator PHP Client Library which is used to access the <a href="https://pearl.razorgator.com/">Razorgator Fullfilment API</a>.</p>
-		    <p>Some of the <code>list*()</code> methods will return a <code>\Razorgator\Client\ResultSet</code> object with can be easily iterated using simple loops. If you prefer PHP’s <a href="http://www.php.net/manual/en/spl.iterators.php">built-in SPL iterators</a> you will be hapy to know that <code>\Razorgator\Client\ResultSet</code> implements <a href="http://www.php.net/manual/en/class.seekableiterator.php">SeekableIterator</a>.</p>
+		    <p>Some of the <code>list*()</code> methods will return a <code>Razorgator\Client\ResultSet</code> object with can be easily iterated using simple loops. If you prefer PHP’s <a href="http://www.php.net/manual/en/spl.iterators.php">built-in SPL iterators</a> you will be happy to know that <code>Razorgator\Client\ResultSet</code> implements <code><a href="http://www.php.net/manual/en/class.seekableiterator.php">SeekableIterator</a></code>.</p>
 
 		    <?php
 		        if (isset($input)) {
