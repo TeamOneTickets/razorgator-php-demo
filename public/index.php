@@ -251,11 +251,8 @@ if (isset($_REQUEST['libraryMethod'])) {
                         default:
                         case 'listOrders':
                         case 'listOrdersCompleted':
-                        case 'rejectOrder':
                         case 'getAirbill':
                         case 'downloadAirbill':
-                        case 'getPurchaseOrder':
-                        case 'downloadPurchaseOrder':
                             _outputListCode($libraryMethod, $options);
                             $results = _doList($client, $libraryMethod, $options);
                             break;
@@ -266,13 +263,37 @@ if (isset($_REQUEST['libraryMethod'])) {
                             $results = _doShow($client, $libraryMethod, $showId);
                             break;
 
+                        case 'rejectOrder':
+                            _outputListCode($libraryMethod, $options);
+                            $results = _doOther($client, $libraryMethod, $options['orderId'], $options['orderToken']);
+                            break;
+
+                        case 'getPurchaseOrder':
+                        case 'downloadPurchaseOrder':
+                            $showId = $options['orderId'];
+                            _outputShowCode($libraryMethod, $showId);
+                            $results = _doOther($client, $libraryMethod, $options['purchaseOrderId'], $options['orderId'], $options['orderToken']);
+                            break;
+
                         case 'acceptOrder' :
                         case 'shipOrder' :
                             $displayOptions = array(
                                 'orderId'               => (int)    $options['orderId'],
                                 'orderToken'            => (string) $options['orderToken'],
-                                'seatNumbers'           => (string) $options['seatNumbers'],
                             );
+
+                            if (!empty($options['shipNow'])) {
+                                $displayOptions['shipNow'] = (string) $options['shipNow'];
+
+                                if ($options['shipNow'] == false) {
+                                    $estimatedShipDate = new DateTime();
+                                    $displayOptions['estimatedShipDate'] = $estimatedShipDate->format('Y-m-d');
+                                }
+                            }
+
+                            if (!empty($options['seatNumbers'])) {
+                                $displayOptions['seatNumbers'] = (string) $options['seatNumbers'];
+                            }
 
                             if (!empty($options['estimatedShipDate'])) {
                                 $estimatedShipDate = new DateTime($options['estimatedShipDate']);
@@ -280,18 +301,23 @@ if (isset($_REQUEST['libraryMethod'])) {
                                 unset($estimatedShipDate);
                             }
 
-                            if (!empty($_FILES['ticketFile'])) {
-                                foreach ($_FILES['ticketFile'] as $ticketFile) {
-                                    if ($ticketFile['error'] === 0) {
-                                        $ticketfiles[] = base64_encode(file_get_contents($ticketFile['tmp_name']));
+
+                            // var_dump($_FILES);
+                            if (!empty($_FILES['ticketFile']['name'])) {
+                                $ticketFiles = array();
+                                foreach ($_FILES as $ticketFile) {
+                                    // var_dump($ticketFile);
+                                    if ($ticketFile['error'] == 0) {
+                                        $ticketFiles[] = base64_encode(file_get_contents($ticketFile['tmp_name']));
                                     }
                                 }
-                                $displayOptions['ticketFile'] = implode(';', $ticketFiles);
+                                $options['ticketFile'] = implode(';', $ticketFiles);
+                                $displayOptions['ticketFile'] = substr($options['ticketFile'],0, 100) . '…';
                                 unset($ticketFile, $ticketFiles);
                             }
 
-                            _outputListCode($libraryMethod, $options);
-                            $results = _doList($client, $libraryMethod, $options);
+                            _outputListCode($libraryMethod, $displayOptions);
+                            $results = _doCreateById($client, $libraryMethod, $options['orderId'], $options);
                             break;
 
                     }
@@ -329,7 +355,7 @@ if (isset($_REQUEST['libraryMethod'])) {
                     }
                 }
 		    ?>
-		    <form action="index.php" method="get" target="_top" class="form-horizontal" onsubmit="checkForm();" enctype="multipart/form-data">
+		    <form action="index.php" id="api-demo-form" method="get" target="_top" class="form-horizontal" onsubmit="checkForm();" enctype="multipart/form-data">
 		        <fieldset id="environmentAndCredentials">
                     <legend>Environment and Credentials</legend>
 
@@ -429,7 +455,7 @@ if (isset($_REQUEST['libraryMethod'])) {
                     <div class="control-group acceptOrder shipOrder rejectOrder getAirbill downloadAirbill getPurchaseOrder downloadPurchaseOrder">
                         <label class="control-label" for="orderToken"><code>orderToken</code></label>
                         <div class="controls">
-                            <input name="orderToken" id="orderToken" class="" type="text" value="" />
+                            <input name="orderToken" id="orderToken" class="input-xxlarge" type="text" value="" />
                         </div>
                     </div>
 
@@ -443,7 +469,10 @@ if (isset($_REQUEST['libraryMethod'])) {
                     <div class="control-group acceptOrder">
                         <label class="control-label" for="shipNow"><code>shipNow</code></label>
                         <div class="controls">
-                            <input name="shipNow" id="shipNow" type="checkbox" value="1" />
+                            <select name="shipNow" id="shipNow">
+                                <option value="true">true</option>
+                                <option value="false">false</option>
+                            </select>
                         </div>
                     </div>
 
