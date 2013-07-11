@@ -68,20 +68,15 @@ function toggleOptions() {
     $methodInput.children('legend').html(selectedMethod + '() Specific Parameters');
     $methodInput.find('.control-group').hide();
 
-    if (selectedMethod === 'createOrdersClient') {
-        $('.clientOrderParameters').show();
-        //alert('show clientOrderParameters');
-    } else {
-        $('.clientOrderParameters').hide();
-        //alert('hide clientOrderParameters');
-    }
-
     $('.' + selectedMethod).show();
 
-    if (selectedMethod === 'createShipment') {
-        $('#APItest').attr('method', 'POST');
+    if (selectedMethod === 'acceptOrder'
+     || selectedMethod === 'shipOrder'
+     || selectedMethod === 'rejectOrder'
+     ) {
+        $('#api-demo-form').attr('method', 'POST');
     } else {
-        $('#APItest').attr('method', 'GET');
+        $('#api-demo-form').attr('method', 'GET');
     }
 
     $('.btn-primary').removeClass('disabled');
